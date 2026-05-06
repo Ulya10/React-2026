@@ -4,15 +4,10 @@
   flex-direction: column;
 }
 
-.search-section, .result-section{
+.search-section, .results-section{
 padding: 1rem;
 margin: 10px;
 }
 
-.search-section{
-  background-color:aquamarine;
-}
 
-.result-section{
-  background-color: lightblue;
-}
+

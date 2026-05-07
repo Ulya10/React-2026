@@ -2,3 +2,21 @@
   background-color: lightblue;
   flex: 1;
 }
+
+.results-list{
+    list-style-type: none;
+    margin: 0 auto;
+}
+
+.results-item{
+    display: flex;
+    border-bottom: 1px solid brown;
+    align-items: center;
+    justify-content: center;
+}
+
+.results-name{
+    border-right: 2px solid grey;
+    margin-right: 2rem;
+    padding-right: 1rem;
+}

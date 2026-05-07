@@ -21,11 +21,11 @@ class ResultsSection extends Component<ResultsSectionProps> {
       <section className="results-section">
         <h2>Results</h2>
         {results.length > 0 && (
-          <ul>
+          <ul className='results-list'>
             {results.map((item, index) => (
-              <li key={index}>
-                <h3>{item.name}</h3>
-                <p>{item.description}</p>
+              <li key={index} className='results-item'>
+                <h3 className='results-name'>{item.name}</h3>
+                <p className='results-descr'>{item.description}</p>
               </li>
             ))}
           </ul>

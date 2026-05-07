@@ -16,6 +16,9 @@ const mockResults: ResultItem[] = [
   {name: 'two',
     description: 'twotwo'
   },
+  {name: 'three',
+    description: 'three'
+  },
 ];
 
 class App extends Component {

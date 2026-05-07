@@ -1,10 +1,6 @@
 import { Component } from 'react';
 import './ResultsSection.css';
-
-interface ResultItem {
-  name: string;
-  description: string;
-}
+import type { ResultItem } from '../types/types';
 
 interface ResultsSectionProps {
   results: ResultItem[];

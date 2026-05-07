@@ -3,11 +3,7 @@ import SearchSection from './components/SearchSection';
 import ResultsSection from './components/ResultsSection';
 import { getItems } from './api/api';
 import './App.css';
-
-interface ResultItem {
-  name: string;
-  description: string;
-}
+import type { ResultItem } from './types/types';
 
 interface AppState {
   results: ResultItem[];
@@ -29,7 +25,9 @@ class App extends Component<object, AppState> {
         this.setState({ results: data });
       });
     } else {
-      getItems().then((data) => this.setState({ results: data }));
+      getItems().then((data) => {
+        this.setState({ results: data });
+      });
     }
   }
 

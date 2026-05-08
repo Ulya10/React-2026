@@ -7,6 +7,7 @@ import type { ResultItem } from './types/types';
 
 interface AppState {
   results: ResultItem[];
+  lastSearch : string;
 }
 
 class App extends Component<object, AppState> {
@@ -15,6 +16,7 @@ class App extends Component<object, AppState> {
 
     this.state = {
       results: [],
+      lastSearch : ''
     };
   }
 
@@ -22,7 +24,7 @@ class App extends Component<object, AppState> {
     const savedText = localStorage.getItem('search-text');
     if (savedText) {
       getItems(savedText).then((data) => {
-        this.setState({ results: data });
+        this.setState({ results: data, lastSearch: savedText});
       });
     } else {
       getItems().then((data) => {
@@ -31,10 +33,21 @@ class App extends Component<object, AppState> {
     }
   }
 
+  updateResults = (text: string): void => {
+    if (text === this.state.lastSearch) {
+      return
+    } else {
+      getItems(text).then((data) => {
+        this.setState({ results: data,  lastSearch: text});
+      })
+    }
+   
+  };
+
   render() {
     return (
       <div className="app">
-        <SearchSection />
+        <SearchSection onSubmitToSearch={this.updateResults} />
         <ResultsSection results={this.state.results} />
       </div>
     );

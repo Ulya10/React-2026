@@ -1,4 +1,5 @@
-import { Component, type ChangeEvent, type SyntheticEvent} from 'react';
+import { Component } from 'react';
+import type { ChangeEvent, SyntheticEvent } from 'react';
 import './SearchSection.css';
 
 interface SessionState {

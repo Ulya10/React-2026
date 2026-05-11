@@ -20,3 +20,11 @@
     margin-right: 2rem;
     padding-right: 1rem;
 }
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+  color: #cc0000;
+  background-color: #fff3f3;
+  border-radius: 4px;
+}

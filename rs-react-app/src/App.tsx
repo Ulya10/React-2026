@@ -9,6 +9,7 @@ interface AppState {
   results: ResultItem[];
   lastSearch : string;
   isLoading : boolean;
+  error: string | null;
 }
 
 class App extends Component<object, AppState> {
@@ -18,22 +19,28 @@ class App extends Component<object, AppState> {
     this.state = {
       results: [],
       lastSearch : '',
-      isLoading: false
+      isLoading: false,
+      error: null
     };
   }
 
   componentDidMount(): void {
-    console.log('App загрузился');
-    this.setState({isLoading : true});
+    this.setState({isLoading : true, error: null });
     const savedText = localStorage.getItem('search-text');
     if (savedText) {
       getItems(savedText).then((data) => {
         this.setState({ results: data, lastSearch: savedText, isLoading: false});
-      });
+      })
+      .catch((err: Error) => {
+        this.setState({ error: err.message, isLoading: false });
+      });;
     } else {
       getItems().then((data) => {
         this.setState({ results: data, isLoading: false });
-      });
+      })
+      .catch((err: Error) => {
+        this.setState({ error: err.message, isLoading: false });
+      });;
     }
   }
 
@@ -41,10 +48,13 @@ class App extends Component<object, AppState> {
     if (text === this.state.lastSearch) {
       return
     } else {
-      this.setState({ isLoading: true });
+      this.setState({ isLoading: true, error: null  });
       getItems(text).then((data) => {
         this.setState({ results: data,  lastSearch: text, isLoading: false});
       })
+      .catch((err: Error) => {
+        this.setState({ error: err.message, isLoading: false });
+      });
     }
    
   };
@@ -53,7 +63,7 @@ class App extends Component<object, AppState> {
     return (
       <div className="app">
         <SearchSection onSubmitToSearch={this.updateResults} />
-        <ResultsSection results={this.state.results} isLoading = {this.state.isLoading}/>
+        <ResultsSection results={this.state.results} isLoading = {this.state.isLoading} error={this.state.error}/>
       </div>
     );
   }

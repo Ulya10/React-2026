@@ -39,7 +39,7 @@ export function getItems(searchWord?: string): Promise<ResultItem[]> {
           );
         }
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         reject(error);
       });
   });

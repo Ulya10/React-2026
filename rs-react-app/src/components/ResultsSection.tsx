@@ -5,6 +5,7 @@ import type { ResultItem } from '../types/types';
 interface ResultsSectionProps {
   results: ResultItem[];
   isLoading: boolean;
+  error: string | null;
 }
 
 class ResultsSection extends Component<ResultsSectionProps> {
@@ -17,7 +18,9 @@ class ResultsSection extends Component<ResultsSectionProps> {
     return (
       <section className="results-section">
         <h2>Results</h2>
-        {this.props.isLoading ? (
+        {this.props.error ? (
+          <p className="error-message">{this.props.error}</p>
+        ) : this.props.isLoading ? (
           <p>Loading...</p>
         ) : (
           results.length > 0 && (

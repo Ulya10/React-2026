@@ -1,56 +1,38 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import type { ChangeEvent, SyntheticEvent } from 'react';
 import './SearchSection.css';
 
-interface SessionState {
-  inputText: string;
-}
-
 interface SearchSectionProps {
-    onSubmitToSearch: (text:string) => void;
+  onSubmitToSearch: (text: string) => void;
 }
 
-class SearchSection extends Component <SearchSectionProps, SessionState>{
-    constructor(props: SearchSectionProps){
-        super(props);
-        this.state = {
-            inputText : '',
-        }
-    }
+export default function SearchSection(props: SearchSectionProps) {
+  const [inputText, setinputText] = useState('');
 
-    componentDidMount(): void {
-        const savedText = localStorage.getItem('search-text');
-        if(savedText){
-            this.setState({
-                inputText : savedText
-            })
-        }
+  useEffect(() => {
+    const savedText = localStorage.getItem('search-text');
+    if (savedText) {
+      setinputText(savedText);
     }
+  }, []);
 
-    handleInputChange = (evt:ChangeEvent<HTMLInputElement>):void => {
-        this.setState({
-            inputText : evt.target.value
-        });
-    }
+  const handleInputChange = (evt: ChangeEvent<HTMLInputElement>): void => {
+    setinputText(evt.target.value);
+  };
+  const submitSearch = (evt: SyntheticEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    const text: string = inputText.trim();
+    localStorage.setItem('search-text', text);
+    props.onSubmitToSearch(text);
+  };
 
-    submitSearch = (evt: SyntheticEvent<HTMLFormElement>) => {
-        evt.preventDefault();
-        const text: string = this.state.inputText.trim();
-        localStorage.setItem('search-text', text);
-        this.props.onSubmitToSearch(text);
-    }
-
-    render() {
-        return (
-        <section className="search-section">
-          <h2>Search</h2>
-          <form onSubmit={this.submitSearch}>
-            <input type="text" value = {this.state.inputText} onChange={this.handleInputChange}/>
-            <button type="submit">Search!</button>
-          </form>
-        </section>
-        )
-    }
+  return (
+    <section className="search-section">
+      <h2>Search</h2>
+      <form onSubmit={submitSearch}>
+        <input type="text" value={inputText} onChange={handleInputChange} />
+        <button type="submit">Search!</button>
+      </form>
+    </section>
+  );
 }
-
-export default SearchSection;

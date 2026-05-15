@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import './ResultsSection.css';
 import type { ResultItem } from '../types/types';
 
@@ -8,35 +7,26 @@ interface ResultsSectionProps {
   error: string | null;
 }
 
-class ResultsSection extends Component<ResultsSectionProps> {
-  constructor(props: ResultsSectionProps) {
-    super(props);
-  }
-
-  render() {
-    const results = this.props.results;
-    return (
-      <section className="results-section">
-        <h2>Results</h2>
-        {this.props.error ? (
-          <p className="error-message">{this.props.error}</p>
-        ) : this.props.isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          results.length > 0 && (
-            <ul className="results-list">
-              {results.map((item, index) => (
-                <li key={index} className="results-item">
-                  <h3 className="results-name">{item.name}</h3>
-                  <p className="results-descr">{item.description}</p>
-                </li>
-              ))}
-            </ul>
-          )
-        )}
-      </section>
-    );
-  }
+export default function ResultsSection(props: ResultsSectionProps) {
+  return (
+    <section className="results-section">
+      <h2>Results</h2>
+      {props.error ? (
+        <p className="error-message">{props.error}</p>
+      ) : props.isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        props.results.length > 0 && (
+          <ul className="results-list">
+            {props.results.map((item, index) => (
+              <li key={index} className="results-item">
+                <h3 className="results-name">{item.name}</h3>
+                <p className="results-descr">{item.description}</p>
+              </li>
+            ))}
+          </ul>
+        )
+      )}
+    </section>
+  );
 }
-
-export default ResultsSection;

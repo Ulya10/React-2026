@@ -1,26 +1,26 @@
 import SearchSection from './components/SearchSection';
 import ResultsSection from './components/ResultsSection';
 import { useState, useEffect } from 'react';
+import useLocalStorage from './hooks/useLocalStorage';
 import { getItems } from './api/api';
 import './App.css';
 import type { ResultItem } from './types/types';
 
 export default function App() {
   const [results, setResults] = useState<ResultItem[]>([]);
-  const [lastSearch, setlastSearch] = useState('');
+  const [lastSearch, setlastSearch] = useLocalStorage('search-text', '');
   const [isLoading, setisLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setisLoading(true);
     setError(null);
-    const savedText = localStorage.getItem('search-text');
-    if (savedText) {
-      getItems(savedText)
+
+    if (lastSearch) {
+      getItems(lastSearch)
         .then((data) => {
           setisLoading(false);
           setResults(data);
-          setlastSearch(savedText);
         })
         .catch((err: Error) => {
           setisLoading(false);

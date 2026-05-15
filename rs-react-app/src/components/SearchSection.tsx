@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 import type { ChangeEvent, SyntheticEvent } from 'react';
 import './SearchSection.css';
 
@@ -7,22 +7,16 @@ interface SearchSectionProps {
 }
 
 export default function SearchSection(props: SearchSectionProps) {
-  const [inputText, setinputText] = useState('');
-
-  useEffect(() => {
-    const savedText = localStorage.getItem('search-text');
-    if (savedText) {
-      setinputText(savedText);
-    }
-  }, []);
+  const [inputText, setinputText] = useLocalStorage('search-text', '');
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>): void => {
     setinputText(evt.target.value);
   };
+
   const submitSearch = (evt: SyntheticEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const text: string = inputText.trim();
-    localStorage.setItem('search-text', text);
+    setinputText(text);
     props.onSubmitToSearch(text);
   };
 

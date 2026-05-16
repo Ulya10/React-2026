@@ -1,10 +1,13 @@
 import './ResultsSection.css';
 import type { ResultItem } from '../types/types';
+import { useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface ResultsSectionProps {
   results: ResultItem[];
   isLoading: boolean;
   error: string | null;
+  currentPage: number;
 }
 
 export default function ResultsSection(props: ResultsSectionProps) {
@@ -20,8 +23,10 @@ export default function ResultsSection(props: ResultsSectionProps) {
           <ul className="results-list">
             {props.results.map((item, index) => (
               <li key={index} className="results-item">
-                <h3 className="results-name">{item.name}</h3>
-                <p className="results-descr">{item.description}</p>
+                <Link to={`/${props.currentPage}/details/${index}`}>
+                  <h3 className="results-name">{item.name}</h3>
+                  <p className="results-descr">{item.description}</p>
+                </Link>
               </li>
             ))}
           </ul>

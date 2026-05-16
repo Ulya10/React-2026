@@ -1,15 +1,8 @@
-import type { ResultItem } from "../types/types";
-
-// const mockResults: ResultItem[] = [
-//   { name: 'one', description: 'oneone' },
-//   { name: 'two', description: 'twotwo' },
-//   { name: 'three', description: 'three' },
-// ];
+import type { ResultItem } from '../types/types';
 
 const BASE_URL = 'https://official-joke-api.appspot.com/jokes/random/50';
 
 export function getItems(searchWord?: string): Promise<ResultItem[]> {
-
   return new Promise((resolve, reject) => {
     fetch(BASE_URL)
       .then((response) => {

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import ResultsSection from '../components/ResultsSection.tsx';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
 const mockResults = [
@@ -93,5 +94,23 @@ describe('ResultsSection', () => {
     );
 
     expect(screen.queryByText('bulbasaur')).not.toBeInTheDocument();
+  });
+
+  it('stops propagation when clicking on list item', async () => {
+    const user = userEvent.setup();
+
+    renderWithRouter(
+      <ResultsSection
+        results={mockResults}
+        isLoading={false}
+        error={null}
+        currentPage={1}
+      />
+    );
+
+    const listItem = screen.getByText('bulbasaur').closest('li')!;
+    await user.click(listItem);
+
+    expect(screen.getByText('bulbasaur')).toBeInTheDocument();
   });
 });

@@ -1,14 +1,6 @@
 import SearchSection from './SearchSection';
 import ResultsSection from './ResultsSection';
-import {
-  Routes,
-  Route,
-  Link,
-  useParams,
-  useNavigate,
-  useLocation,
-  Outlet,
-} from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { getItems } from '../api/api';
@@ -22,6 +14,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   const location = useLocation();
+  const isDetailsOpen = location.pathname.includes('/details/');
 
   const { page } = useParams<{ page: string }>();
   const navigate = useNavigate();
@@ -92,7 +85,14 @@ export default function Home() {
       <SearchSection onSubmitToSearch={updateResults} />
 
       <div className="master-details">
-        <div className="master-section">
+        <div
+          className="master-section"
+          onClick={() => {
+            if (isDetailsOpen) {
+              navigate(`/${currentPage}`);
+            }
+          }}
+        >
           <ResultsSection
             results={currentResults}
             isLoading={isLoading}

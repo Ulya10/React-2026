@@ -28,3 +28,21 @@
 .master-details:has(.details-section:not(:empty)) .master-section {
     flex: 0 0 65%;
 }
+
+nav {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-right: 1rem;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}

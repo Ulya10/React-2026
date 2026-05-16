@@ -12,19 +12,19 @@ export function getItems(searchWord?: string): Promise<ResultItem[]> {
         return response.json();
       })
       .then((data) => {
-        const pokemons: ResultItem[] = data.map(
-          (pokemon: { setup: string; punchline: string }) => ({
-            name: pokemon.setup,
-            description: pokemon.punchline,
+        const jokes: ResultItem[] = data.map(
+          (joke: { setup: string; punchline: string }) => ({
+            name: joke.setup,
+            description: joke.punchline,
           })
         );
 
         if (!searchWord || searchWord.trim() === '') {
-          resolve(pokemons);
+          resolve(jokes);
         } else {
           const uncasedSearchWord = searchWord.toLowerCase().trim();
           resolve(
-            pokemons.filter(
+            jokes.filter(
               (item) =>
                 item.name.toLowerCase().includes(uncasedSearchWord) ||
                 item.description.toLowerCase().includes(uncasedSearchWord)

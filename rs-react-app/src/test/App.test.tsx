@@ -2,12 +2,21 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import App from '../App';
+import { MemoryRouter } from 'react-router-dom';
 
 vi.mock('../api/api', () => ({
   getItems: vi.fn(),
 }));
 
 import { getItems } from '../api/api';
+
+function renderApp() {
+  return render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>
+  );
+}
 
 const mockData = [
   { name: 'Joke 1', description: 'Answer 1' },
@@ -22,13 +31,13 @@ describe('App', () => {
 
   it('shows loading on initial load', () => {
     vi.mocked(getItems).mockReturnValue(new Promise(() => {}));
-    render(<App />);
+    renderApp();
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it('loads and displays results on mount', async () => {
     vi.mocked(getItems).mockResolvedValue(mockData);
-    render(<App />);
+    renderApp();
     await waitFor(() => {
       expect(screen.getByText('Joke 1')).toBeInTheDocument();
     });
@@ -40,7 +49,7 @@ describe('App', () => {
   it('calls getItems with saved text from localStorage', async () => {
     localStorage.setItem('search-text', 'why');
     vi.mocked(getItems).mockResolvedValue([]);
-    render(<App />);
+    renderApp();
     await waitFor(() => {
       expect(getItems).toHaveBeenCalledWith('why');
     });
@@ -48,7 +57,7 @@ describe('App', () => {
 
   it('calls getItems without params when localStorage is empty', async () => {
     vi.mocked(getItems).mockResolvedValue([]);
-    render(<App />);
+    renderApp();
     await waitFor(() => {
       expect(getItems).toHaveBeenCalledWith();
     });
@@ -56,7 +65,7 @@ describe('App', () => {
 
   it('updates results with user search', async () => {
     vi.mocked(getItems).mockResolvedValue([]);
-    render(<App />);
+    renderApp();
     const input = screen.getByRole('textbox');
     const button = screen.getByRole('button', { name: /search/i });
 
@@ -67,7 +76,7 @@ describe('App', () => {
 
   it('shows error message when API fails', async () => {
     vi.mocked(getItems).mockRejectedValue(new Error('Server error: 500'));
-    render(<App />);
+    renderApp();
     await waitFor(() => {
       expect(screen.getByText(/server error: 500/i)).toBeInTheDocument();
     });
@@ -77,7 +86,7 @@ describe('App', () => {
     vi.mocked(getItems)
       .mockRejectedValueOnce(new Error('Server error: 500'))
       .mockResolvedValueOnce(mockData);
-    render(<App />);
+    renderApp();
 
     await waitFor(() => {
       expect(screen.getByText(/server error: 500/i)).toBeInTheDocument();

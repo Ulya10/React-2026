@@ -1,14 +1,16 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function DetailsSection() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ id: string }>();
+  const id = params.id;
   const index = Number(id);
+  const navigate = useNavigate();
 
   return (
-    <div className="details-section">
-      <h3>Details</h3>
+    <div>
+      <h2>Details</h2>
       <p>Item #{index}</p>
-      <Link to="..">Close</Link>
+      <button onClick={() => navigate(-1)}>Close</button>
     </div>
   );
 }

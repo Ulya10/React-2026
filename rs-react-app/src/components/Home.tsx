@@ -6,18 +6,22 @@ import {
   Link,
   useParams,
   useNavigate,
+  useLocation,
   Outlet,
 } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { getItems } from '../api/api';
 import type { ResultItem } from '../types/types';
+import './Home.css';
 
 export default function Home() {
   const [results, setResults] = useState<ResultItem[]>([]);
   const [lastSearch, setlastSearch] = useLocalStorage('search-text', '');
   const [isLoading, setisLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const location = useLocation();
 
   const { page } = useParams<{ page: string }>();
   const navigate = useNavigate();
@@ -86,36 +90,41 @@ export default function Home() {
   return (
     <>
       <SearchSection onSubmitToSearch={updateResults} />
-      <ResultsSection
-        results={currentResults}
-        isLoading={isLoading}
-        error={error}
-        currentPage={currentPage}
-      />
 
-      {!isLoading && results.length > 0 && totalPages > 1 && (
-        <div className="controls">
-          <button
-            className="control-btn"
-            onClick={() => changePage(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Prev
-          </button>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            className="control-btn"
-            onClick={() => changePage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
+      <div className="master-details">
+        <div className="master-section">
+          <ResultsSection
+            results={currentResults}
+            isLoading={isLoading}
+            error={error}
+            currentPage={currentPage}
+          />
+          {!isLoading && results.length > 0 && totalPages > 1 && (
+            <div className="controls">
+              <button
+                className="control-btn"
+                onClick={() => changePage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Prev
+              </button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                className="control-btn"
+                onClick={() => changePage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
-      )}
-      <div className="detail-section">
-        <Outlet />
+
+        <div className="details-section">
+          <Outlet />
+        </div>
       </div>
     </>
   );

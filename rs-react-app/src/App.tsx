@@ -10,11 +10,12 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/1" replace />} />
+
       <Route path="/:page" element={<Layout />}>
+        <Route index element={<Home />} />
         <Route path="details/:id" element={<Home />}>
           <Route index element={<DetailsSection />} />
         </Route>
-        <Route index element={<Home />} />
       </Route>
 
       <Route path="/about" element={<About />} />

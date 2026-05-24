@@ -1,6 +1,7 @@
 import './ResultsSection.css';
 import type { ResultItem } from '../types/types';
 import { Link } from 'react-router-dom';
+import { useSelectedStore } from '../store/useSelectedStore';
 
 interface ResultsSectionProps {
   results: ResultItem[];
@@ -10,6 +11,8 @@ interface ResultsSectionProps {
 }
 
 export default function ResultsSection(props: ResultsSectionProps) {
+  const selectedIndexes = useSelectedStore((state) => state.selectedIndexes);
+  const toggleItem = useSelectedStore((state) => state.toggleItem);
   return (
     <section className="results-section">
       <h2>Results</h2>
@@ -26,6 +29,14 @@ export default function ResultsSection(props: ResultsSectionProps) {
                 className="results-item"
                 onClick={(e) => e.stopPropagation()}
               >
+                <input
+                  type="checkbox"
+                  checked={selectedIndexes.includes(index)}
+                  onChange={(evt) => {
+                    evt.stopPropagation();
+                    toggleItem(index);
+                  }}
+                />
                 <Link to={`/${props.currentPage}/details/${index}`}>
                   <h3 className="results-name">{item.name}</h3>
                   <p className="results-descr">{item.description}</p>

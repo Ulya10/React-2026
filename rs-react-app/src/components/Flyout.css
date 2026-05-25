@@ -5,8 +5,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1.5rem;
-    background-color: #fff;
-    border-top: 2px solid #e0e0e0;
+    background-color: var(--flyout-bg);
+    border-top: 2px solid var(--flyout-border);
     z-index: 100;
 }
 

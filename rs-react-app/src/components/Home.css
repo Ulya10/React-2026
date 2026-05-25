@@ -14,7 +14,7 @@
 .details-section {
     min-width: 250px;
     margin-left: 1rem;
-    border: 1px solid grey;
+    border: 1px solid var(--details-border);
 }
 
 .details-section:empty {
@@ -34,11 +34,12 @@ nav {
     gap: 1rem;
     justify-content: flex-end;
     margin-right: 1rem;
-    align-items: center;
+    align-items: baseline;
 }
 
 nav a {
     text-decoration: none;
+    color: var(--text-color);
 }
 
 .controls {

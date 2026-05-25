@@ -1,0 +1,16 @@
+.flyout {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background-color: var(--flyout-bg);
+    border-top: 2px solid var(--flyout-border);
+    z-index: 100;
+}
+
+.flyout-buttons {
+    display: flex;
+    gap: 0.6rem;
+}

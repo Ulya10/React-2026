@@ -4,6 +4,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import App from '../App';
 import { MemoryRouter } from 'react-router-dom';
 
+import { ThemeProvider } from '../context/ThemeContext';
+
 vi.mock('../api/api', () => ({
   getItems: vi.fn(),
 }));
@@ -13,7 +15,9 @@ import { getItems } from '../api/api';
 function renderApp() {
   return render(
     <MemoryRouter>
-      <App />
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
     </MemoryRouter>
   );
 }

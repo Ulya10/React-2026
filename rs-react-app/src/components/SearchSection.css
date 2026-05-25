@@ -1,4 +1,4 @@
-.search-section{
-  background-color:aquamarine;
-  border-bottom: 2px solid #ddd;
+.search-section {
+  background-color: var(--search-bg);
+  border-bottom: 2px solid var(--border-color);
 }

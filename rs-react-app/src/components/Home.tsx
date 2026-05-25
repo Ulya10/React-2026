@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { getItems } from '../api/api';
 import type { ResultItem } from '../types/types';
+import { useSelectedStore } from '../store/useSelectedStore';
 import './Home.css';
 
 export default function Home() {
@@ -23,6 +24,7 @@ export default function Home() {
   const itemsOnPage = 5;
 
   const totalPages = Math.ceil(results.length / itemsOnPage);
+  const setStoreResults = useSelectedStore((state) => state.setResults);
 
   const currentResults = results.slice(
     (currentPage - 1) * itemsOnPage,
@@ -42,6 +44,7 @@ export default function Home() {
         .then((data) => {
           setisLoading(false);
           setResults(data);
+          setStoreResults(data);
         })
         .catch((err: Error) => {
           setisLoading(false);
@@ -52,6 +55,7 @@ export default function Home() {
         .then((data) => {
           setisLoading(false);
           setResults(data);
+          setStoreResults(data);
         })
         .catch((err: Error) => {
           setisLoading(false);
@@ -71,6 +75,7 @@ export default function Home() {
         .then((data) => {
           setisLoading(false);
           setResults(data);
+          setStoreResults(data);
           setlastSearch(text);
         })
         .catch((err: Error) => {

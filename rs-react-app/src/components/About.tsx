@@ -9,7 +9,11 @@ export default function About() {
       </p>
       <p>
         As a task for{' '}
-        <a href="https://rs.school/courses/reactjs/" target="_blank">
+        <a
+          href="https://rs.school/courses/reactjs/"
+          target="_blank"
+          rel="noreferrer"
+        >
           RS School React course
         </a>
       </p>

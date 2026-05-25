@@ -1,4 +1,5 @@
 import { Outlet, Link } from 'react-router-dom';
+import Flyout from './Flyout';
 
 export default function Layout() {
   return (
@@ -7,6 +8,7 @@ export default function Layout() {
         <Link to="/about">About</Link>
       </nav>
       <Outlet />
+      <Flyout />
     </div>
   );
 }

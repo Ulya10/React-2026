@@ -9,7 +9,7 @@ export default function Layout() {
       <nav>
         <Link to="/about">About</Link>
         <button onClick={toggleTheme}>
-          {theme === 'light' ? 'To Dark' : 'To Light'}
+          {theme === 'light' ? 'To Dark Humor' : 'To Light Humor'}
         </button>
       </nav>
       <Outlet />

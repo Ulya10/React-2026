@@ -23,26 +23,30 @@ export default function ResultsSection(props: ResultsSectionProps) {
       ) : (
         props.results.length > 0 && (
           <ul className="results-list">
-            {props.results.map((item, index) => (
-              <li
-                key={index}
-                className="results-item"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedIndexes.includes(index)}
-                  onChange={(evt) => {
-                    evt.stopPropagation();
-                    toggleItem(index);
-                  }}
-                />
-                <Link to={`/${props.currentPage}/details/${index}`}>
-                  <h3 className="results-name">{item.name}</h3>
-                  <p className="results-descr">{item.description}</p>
-                </Link>
-              </li>
-            ))}
+            {props.results.map((item, index) => {
+              const globalIndex = (props.currentPage - 1) * 5 + index;
+
+              return (
+                <li
+                  key={index}
+                  className="results-item"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedIndexes.includes(globalIndex)}
+                    onChange={(evt) => {
+                      evt.stopPropagation();
+                      toggleItem(globalIndex);
+                    }}
+                  />
+                  <Link to={`/${props.currentPage}/details/${globalIndex}`}>
+                    <h3 className="results-name">{item.name}</h3>
+                    <p className="results-descr">{item.description}</p>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         )
       )}

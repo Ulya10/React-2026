@@ -5,7 +5,6 @@ export default function Flyout() {
   const numberOfItems = useSelectedStore(
     (state) => state.selectedIndexes.length
   );
-  console.log('selectedItems:', numberOfItems);
   const unselectAll = useSelectedStore((state) => state.unselectAll);
   const selectedIndexes = useSelectedStore((state) => state.selectedIndexes);
   const results = useSelectedStore((state) => state.results);

@@ -1,18 +1,14 @@
 import SearchSection from './SearchSection';
 import ResultsSection from './ResultsSection';
 import { useParams, useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { getItems } from '../api/api';
-import type { ResultItem } from '../types/types';
 import { useSelectedStore } from '../store/useSelectedStore';
 import './Home.css';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Home() {
-  const [results, setResults] = useState<ResultItem[]>([]);
   const [lastSearch, setlastSearch] = useLocalStorage('search-text', '');
-  const [isLoading, setisLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const location = useLocation();
   const isDetailsOpen = location.pathname.includes('/details/');
@@ -20,11 +16,24 @@ export default function Home() {
   const { page } = useParams<{ page: string }>();
   const navigate = useNavigate();
   const currentPage = Number(page) || 1;
-
   const itemsOnPage = 5;
+
+  const {
+    data: results = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['items', lastSearch],
+    queryFn: () => {
+      return getItems(lastSearch);
+    },
+  });
 
   const totalPages = Math.ceil(results.length / itemsOnPage);
   const setStoreResults = useSelectedStore((state) => state.setResults);
+  if (results.length > 0) {
+    setStoreResults(results);
+  }
 
   const currentResults = results.slice(
     (currentPage - 1) * itemsOnPage,
@@ -35,54 +44,12 @@ export default function Home() {
     navigate(`/${page}`);
   };
 
-  useEffect(() => {
-    setisLoading(true);
-    setError(null);
-
-    if (lastSearch) {
-      getItems(lastSearch)
-        .then((data) => {
-          setisLoading(false);
-          setResults(data);
-          setStoreResults(data);
-        })
-        .catch((err: Error) => {
-          setisLoading(false);
-          setError(err.message);
-        });
-    } else {
-      getItems()
-        .then((data) => {
-          setisLoading(false);
-          setResults(data);
-          setStoreResults(data);
-        })
-        .catch((err: Error) => {
-          setisLoading(false);
-          setError(err.message);
-        });
-    }
-  }, []);
-
   const updateResults = (text: string): void => {
     if (text === lastSearch) {
       return;
-    } else {
-      navigate('/1');
-      setisLoading(true);
-      setError(null);
-      getItems(text)
-        .then((data) => {
-          setisLoading(false);
-          setResults(data);
-          setStoreResults(data);
-          setlastSearch(text);
-        })
-        .catch((err: Error) => {
-          setisLoading(false);
-          setError(err.message);
-        });
     }
+    navigate('/1');
+    setlastSearch(text);
   };
 
   return (
@@ -101,7 +68,7 @@ export default function Home() {
           <ResultsSection
             results={currentResults}
             isLoading={isLoading}
-            error={error}
+            error={error ? error.message : null}
             currentPage={currentPage}
           />
           {!isLoading && results.length > 0 && totalPages > 1 && (

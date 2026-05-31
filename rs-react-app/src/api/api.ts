@@ -1,6 +1,7 @@
 import type { ResultItem } from '../types/types';
 
 const BASE_URL = 'https://official-joke-api.appspot.com/jokes/random/50';
+const DETAILS_URL = 'https://official-joke-api.appspot.com/jokes';
 
 export async function getItems(searchWord?: string): Promise<ResultItem[]> {
   const url = searchWord
@@ -13,9 +14,10 @@ export async function getItems(searchWord?: string): Promise<ResultItem[]> {
   }
   const data = await response.json();
   const jokes: ResultItem[] = data.map(
-    (joke: { setup: string; punchline: string }) => ({
+    (joke: { setup: string; punchline: string; id: number }) => ({
       name: joke.setup,
       description: joke.punchline,
+      id: joke.id,
     })
   );
 
@@ -29,4 +31,18 @@ export async function getItems(searchWord?: string): Promise<ResultItem[]> {
         item.description.toLowerCase().includes(uncasedSearchWord)
     );
   }
+}
+
+export async function getDetails(id: number): Promise<ResultItem> {
+  const response = await fetch(`${DETAILS_URL}/${id}`);
+  if (!response.ok) {
+    throw new Error(`Server error: ${response.status}`);
+  }
+  const jokeForDetails = await response.json();
+  return {
+    id: jokeForDetails.id,
+    name: jokeForDetails.setup,
+    description: jokeForDetails.punchline,
+    type: jokeForDetails.type,
+  };
 }

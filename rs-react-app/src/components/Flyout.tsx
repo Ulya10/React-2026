@@ -16,8 +16,8 @@ export default function Flyout() {
   const downloadSelected = () => {
     let csv = 'Name, Description\n';
 
-    for (const index of selectedIndexes) {
-      const item = results[index];
+    for (const id of selectedIndexes) {
+      const item = results.find((joke) => joke.id === id);
       if (item) {
         csv += `"${item.name}","${item.description}"\n`;
       }

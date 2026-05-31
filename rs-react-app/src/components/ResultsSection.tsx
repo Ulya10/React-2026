@@ -34,13 +34,13 @@ export default function ResultsSection(props: ResultsSectionProps) {
                 >
                   <input
                     type="checkbox"
-                    checked={selectedIndexes.includes(globalIndex)}
+                    checked={selectedIndexes.includes(item.id)}
                     onChange={(evt) => {
                       evt.stopPropagation();
-                      toggleItem(globalIndex);
+                      toggleItem(item.id);
                     }}
                   />
-                  <Link to={`/${props.currentPage}/details/${globalIndex}`}>
+                  <Link to={`/${props.currentPage}/details/${item.id}`}>
                     <h3 className="results-name">{item.name}</h3>
                     <p className="results-descr">{item.description}</p>
                   </Link>

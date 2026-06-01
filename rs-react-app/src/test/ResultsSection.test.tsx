@@ -5,8 +5,8 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
 const mockResults = [
-  { name: 'bulbasaur', description: 'grass type' },
-  { name: 'charmander', description: 'fire type' },
+  { name: 'bulbasaur', description: 'grass type', id: 1 },
+  { name: 'charmander', description: 'fire type', id: 2 },
 ];
 
 function renderWithRouter(component: React.ReactElement) {

@@ -170,4 +170,36 @@ describe('App', () => {
       expect(screen.getByText(/server error: 404/i)).toBeInTheDocument();
     });
   });
+
+  it('caches search results and does not refetch', async () => {
+    vi.mocked(getItems).mockResolvedValue(mockData);
+    renderApp();
+
+    const input = screen.getByRole('textbox');
+    const button = screen.getByRole('button', { name: /search/i });
+
+    await userEvent.type(input, 'test');
+    await userEvent.click(button);
+
+    expect(getItems).toHaveBeenCalledTimes(2);
+
+    await userEvent.click(button);
+    expect(getItems).toHaveBeenCalledTimes(2);
+  });
+
+  it('refetches after refresh button click', async () => {
+    vi.mocked(getItems).mockResolvedValue(mockData);
+    renderApp();
+
+    await waitFor(() => {
+      expect(screen.getByText('Joke 1')).toBeInTheDocument();
+    });
+
+    expect(getItems).toHaveBeenCalledTimes(1);
+
+    const refreshButton = screen.getByText('Refresh');
+    await userEvent.click(refreshButton);
+
+    expect(getItems).toHaveBeenCalledTimes(2);
+  });
 });

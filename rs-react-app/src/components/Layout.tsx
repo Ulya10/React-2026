@@ -2,12 +2,15 @@ import { Outlet, Link } from 'react-router-dom';
 import Flyout from './Flyout';
 import { useTheme } from '../context/ThemeContext';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSelectedStore } from '../store/useSelectedStore';
 
 export default function Layout() {
   const { theme, toggleTheme } = useTheme();
   const queryClient = useQueryClient();
+  const unselectAll = useSelectedStore((state) => state.unselectAll);
   const refreshItems = () => {
     queryClient.invalidateQueries({ queryKey: ['items'] });
+    unselectAll();
   };
 
   return (

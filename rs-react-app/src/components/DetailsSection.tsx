@@ -38,7 +38,7 @@ export default function DetailsSection() {
     <div>
       <h2>Details</h2>
       <p>Item #{id}</p>
-      <p>Type{item.type}</p>
+      <p>Type: {item.type}</p>
       <button onClick={oneClose}>Close</button>
     </div>
   );

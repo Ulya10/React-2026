@@ -1,14 +1,8 @@
 import { create } from 'zustand';
+import type { validationData } from '../validation/validationSchema';
 
-interface submissionData {
+interface submissionData extends validationData {
   id: string;
-  name: string;
-  age: number;
-  email: string;
-  gender: string;
-  agreement: boolean;
-  password: string;
-  country: string;
 }
 
 interface submission {

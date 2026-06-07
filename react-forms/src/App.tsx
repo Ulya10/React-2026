@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './App.css';
+import { Modal } from './components/Modal';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,19 +27,17 @@ function App() {
           Second form
         </button>
       </div>
-      {isModalOpen && (
-        <div className="overlay">
-          <div className="modal">
-            <h2>
-              {formType === 'uncontrolled'
-                ? 'Uncontrolled Form'
-                : 'React Hook Form'}
-            </h2>
-            <p>Form will be here</p>
-            <button onClick={closeModal}>Close</button>
-          </div>
-        </div>
-      )}
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={
+          formType === 'uncontrolled' ? 'Uncontrolled Form' : 'React Hook Form'
+        }
+      >
+        <p>Form content</p>
+      </Modal>
+
       <div className="submitted-data">
         <h2 className="submitted-title">Submitted data</h2>
       </div>

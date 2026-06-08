@@ -1,0 +1,66 @@
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: #f9f9f9;
+}
+
+.card p {
+    margin: 2px 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+label span {
+    min-width: 100px;
+}
+
+input[type='text'],
+input[type='number'],
+input[type='email'],
+input[type='password'] {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+    margin-right: 0.5rem;
+}
+
+.error {
+    color: red;
+    font-size: 0.6rem;
+    margin: 2px 0 0 0;
+}
+
+button[type='submit'] {
+    border: 1px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+button[type='submit']:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}

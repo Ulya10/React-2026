@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
-import { Modal } from './components/Modal';
+import Modal from './components/Modal';
+import UncontrolledForm from './components/UncontrolledForm';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +36,11 @@ function App() {
           formType === 'uncontrolled' ? 'Uncontrolled Form' : 'React Hook Form'
         }
       >
-        <p>Form content</p>
+        {formType === 'uncontrolled' ? (
+          <UncontrolledForm />
+        ) : (
+          <p>'React Hook Form'</p>
+        )}
       </Modal>
 
       <div className="submitted-data">

@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export const formSchema = z
+export const validationSchema = z
   .object({
     name: z
       .string()
@@ -31,4 +31,4 @@ export const formSchema = z
     path: ['confirmPassword'],
   });
 
-export type validationData = z.infer<typeof formSchema>;
+export type validationData = z.infer<typeof validationSchema>;

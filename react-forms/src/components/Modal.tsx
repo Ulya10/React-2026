@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-export function Modal({
+import './Modal.css';
+export default function Modal({
   isOpen,
   children,
   onClose,
@@ -39,7 +40,7 @@ export function Modal({
     >
       <div className="modal" onClick={(evt) => evt.stopPropagation()}>
         <h2>{title}</h2>
-        <p>{children}</p>
+        {children}
         <button onClick={onClose}>Close</button>
       </div>
     </div>,

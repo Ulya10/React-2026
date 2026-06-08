@@ -2,19 +2,31 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { validationSchema } from '../validation/validationSchema';
 import type { validationData } from '../validation/validationSchema';
+import { useFormStore } from '../store/useFormStore';
+import CountryDropdown from './CountryDropdown';
+import { useController } from 'react-hook-form';
 
-export default function ReactHookForm() {
+export default function ReactHookForm({
+  onSuccess,
+}: {
+  onSuccess: () => void;
+}) {
+  const addSubmission = useFormStore((state) => state.addSubmission);
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isValid },
   } = useForm<validationData>({
     resolver: zodResolver(validationSchema),
     mode: 'onChange',
   });
+  const { field } = useController({ name: 'country', control });
 
   function onSubmit(data: validationData) {
     console.log('Valid:', data);
+    addSubmission(data);
+    onSuccess();
   }
 
   return (
@@ -39,15 +51,23 @@ export default function ReactHookForm() {
 
       <div>
         Gender:
-        <label><input {...register('gender')} type="radio" value="male" /> Male</label>
-        <label><input {...register('gender')} type="radio" value="female" /> Female</label>
-        <label><input {...register('gender')} type="radio" value="other" /> Other</label>
+        <label>
+          <input {...register('gender')} type="radio" value="male" /> Male
+        </label>
+        <label>
+          <input {...register('gender')} type="radio" value="female" /> Female
+        </label>
+        <label>
+          <input {...register('gender')} type="radio" value="other" /> Other
+        </label>
         {errors.gender && <p className="error">{errors.gender.message}</p>}
       </div>
 
       <label>
         <input {...register('agreement')} type="checkbox" /> I agree
-        {errors.agreement && <p className="error">{errors.agreement.message}</p>}
+        {errors.agreement && (
+          <p className="error">{errors.agreement.message}</p>
+        )}
       </label>
 
       <label>
@@ -59,19 +79,30 @@ export default function ReactHookForm() {
       <label>
         Confirm Password:
         <input {...register('confirmPassword')} type="password" />
-        {errors.confirmPassword && <p className="error">{errors.confirmPassword.message}</p>}
+        {errors.confirmPassword && (
+          <p className="error">{errors.confirmPassword.message}</p>
+        )}
       </label>
 
       <label>
         Country:
-        <input {...register('country')} type="text" />
-        {errors.country && <p className="error">{errors.country.message}</p>}
+        <CountryDropdown
+          value={field.value}
+          onChange={field.onChange}
+          error={errors.country?.message}
+        />
       </label>
 
       <label>
         Image:
-        <input {...register('image')} type="file" accept="image/png,image/jpeg" />
-        {errors.image && <p className="error">{String(errors.image.message)}</p>}
+        <input
+          {...register('image')}
+          type="file"
+          accept="image/png,image/jpeg"
+        />
+        {errors.image && (
+          <p className="error">{String(errors.image.message)}</p>
+        )}
       </label>
 
       <button type="submit" disabled={!isValid}>

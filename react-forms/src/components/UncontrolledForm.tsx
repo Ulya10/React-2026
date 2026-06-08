@@ -1,10 +1,16 @@
 import type { SyntheticEvent } from 'react';
 import { useState } from 'react';
 import { validationSchema } from '../validation/validationSchema';
-import type { ZodError } from 'zod';
+import { useFormStore } from '../store/useFormStore';
+import CountryDropdown from './CountryDropdown';
 
-export default function UncontrolledForm() {
+export default function UncontrolledForm({
+  onSuccess,
+}: {
+  onSuccess: () => void;
+}) {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const addSubmission = useFormStore((state) => state.addSubmission);
   function submitData(evt: SyntheticEvent<HTMLFormElement>) {
     evt.preventDefault();
 
@@ -32,9 +38,10 @@ export default function UncontrolledForm() {
       setErrors(fieldErrors);
       return;
     }
-
     console.log('Valid success:', validationResult.data);
+    addSubmission(validationResult.data);
     setErrors({});
+    onSuccess();
   }
 
   return (
@@ -92,8 +99,16 @@ export default function UncontrolledForm() {
 
       <label>
         Country:
-        <input name="country" type="text" />
-        {errors.country && <p className="error">{errors.country}</p>}
+        <CountryDropdown
+          onChange={(value) => {
+            const hiddenInput = document.querySelector(
+              'input[name="country"]'
+            ) as HTMLInputElement;
+            if (hiddenInput) hiddenInput.value = value;
+          }}
+          error={errors.country}
+        />
+        <input name="country" type="hidden" />
       </label>
 
       <label>

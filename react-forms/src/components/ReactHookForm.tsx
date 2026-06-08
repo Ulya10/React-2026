@@ -64,7 +64,8 @@ export default function ReactHookForm({
       </div>
 
       <label>
-        <input {...register('agreement')} type="checkbox" /> I agree
+        <input {...register('agreement')} type="checkbox" /> I agree with Terms
+        & Conditions
         {errors.agreement && (
           <p className="error">{errors.agreement.message}</p>
         )}

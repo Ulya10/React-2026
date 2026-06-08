@@ -45,7 +45,7 @@ export default function UncontrolledForm({
   }
 
   return (
-    <form onSubmit={submitData}>
+    <form onSubmit={submitData} noValidate>
       <label>
         Name:
         <input name="name" type="text" />
@@ -79,7 +79,8 @@ export default function UncontrolledForm({
       </div>
 
       <label>
-        <input name="agreement" type="checkbox" /> I agree
+        <input name="agreement" type="checkbox" /> I agree with Terms &
+        Conditions
         {errors.agreement && <p className="error">{errors.agreement}</p>}
       </label>
 

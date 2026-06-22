@@ -11,7 +11,6 @@ interface SearchSectionProps {
 export default function SearchSection(props: SearchSectionProps) {
   const [inputText, setinputText] = useLocalStorage('search-text', '');
   const t = useTranslations();
-  console.log('Current locale:', t('search'));
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>): void => {
     setinputText(evt.target.value);

@@ -4,6 +4,7 @@ import { getDetails } from '../api/api';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 export default function DetailsSection({
   id,
@@ -13,7 +14,7 @@ export default function DetailsSection({
   page: string;
 }) {
   const locale = useLocale();
-
+  const t = useTranslations();
   const router = useRouter();
   const numId = Number(id);
 
@@ -43,10 +44,12 @@ export default function DetailsSection({
 
   return (
     <div>
-      <h2>Details</h2>
-      <p>Item #{numId}</p>
-      <p>Type: {item.type}</p>
-      <button onClick={oneClose}>Close</button>
+      <h2>{t('details')}</h2>
+      <p>#{numId}</p>
+      <p>
+        {t('type')}: {item.type}
+      </p>
+      <button onClick={oneClose}>{t('close')}</button>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSelectedStore } from '../store/useSelectedStore';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export function LocaleSwitcher() {
   const locale = useLocale();
@@ -20,6 +21,7 @@ export function LocaleSwitcher() {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const locale = useLocale();
+  const t = useTranslations();
   const { theme, toggleTheme } = useTheme();
   const queryClient = useQueryClient();
   const unselectAll = useSelectedStore((state) => state.unselectAll);
@@ -32,12 +34,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="app">
       <nav>
-        <Link href={`/${locale}/about`}>About</Link>
+        <Link href={`/${locale}/about`}>{t('about')}</Link>
         <LocaleSwitcher />
         <button onClick={toggleTheme}>
-          {theme === 'light' ? 'To Dark Humor' : 'To Light Humor'}
+          {theme === 'light' ? t('themeDark') : t('themeLight')}
         </button>
-        <button onClick={refreshItems}>Refresh</button>
+        <button onClick={refreshItems}>{t('refresh')}</button>
       </nav>
       {children}
       <Flyout />

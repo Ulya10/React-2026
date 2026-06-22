@@ -4,6 +4,7 @@ import type { ResultItem } from '../types/types';
 import Link from 'next/link';
 import { useSelectedStore } from '../store/useSelectedStore';
 import { useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 interface ResultsSectionProps {
   results: ResultItem[];
@@ -14,15 +15,16 @@ interface ResultsSectionProps {
 
 export default function ResultsSection(props: ResultsSectionProps) {
   const locale = useLocale();
+  const t = useTranslations();
   const selectedIndexes = useSelectedStore((state) => state.selectedIndexes);
   const toggleItem = useSelectedStore((state) => state.toggleItem);
   return (
     <section className="results-section">
-      <h2>Results</h2>
+      <h2>{t('results')}</h2>
       {props.error ? (
         <p className="error-message">{props.error}</p>
       ) : props.isLoading ? (
-        <p>Loading...</p>
+        <p>{t('loading')}</p>
       ) : (
         props.results.length > 0 && (
           <ul className="results-list">

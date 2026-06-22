@@ -2,6 +2,7 @@
 import { useSelectedStore } from '../store/useSelectedStore';
 import { downloadCSV } from '@/app/actions';
 import './Flyout.css';
+import { useTranslations } from 'next-intl';
 
 export default function Flyout() {
   const numberOfItems = useSelectedStore(
@@ -10,6 +11,7 @@ export default function Flyout() {
   const unselectAll = useSelectedStore((state) => state.unselectAll);
   const selectedIndexes = useSelectedStore((state) => state.selectedIndexes);
   const results = useSelectedStore((state) => state.results);
+  const t = useTranslations();
 
   if (numberOfItems === 0) {
     return null;
@@ -42,10 +44,12 @@ export default function Flyout() {
 
   return (
     <div className="flyout">
-      <span>Items selected: {numberOfItems}</span>
+      <span>
+        {t('selected')}: {numberOfItems}
+      </span>
       <div className="flyout-buttons">
-        <button onClick={unselectAll}>Unselect all</button>
-        <button onClick={downloadSelected}>Download selected</button>
+        <button onClick={unselectAll}>{t('unselectAll')}</button>
+        <button onClick={downloadSelected}>{t('download')}</button>
       </div>
     </div>
   );

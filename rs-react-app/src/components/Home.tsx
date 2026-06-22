@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { useEffect } from 'react';
 import type { ResultItem } from '@/types/types';
+import { useTranslations } from 'next-intl';
 
 export default function Home({
   page,
@@ -24,6 +25,7 @@ export default function Home({
   initialSearch?: string;
 }) {
   const locale = useLocale();
+  const t = useTranslations();
   const [lastSearch, setlastSearch] = useLocalStorage(
     'search-text',
     initialSearch || ''
@@ -68,7 +70,7 @@ export default function Home({
     if (text === lastSearch) {
       return;
     }
-    //  router.push(`/${locale}/1`);
+    router.push(`/${locale}/1`);
     setlastSearch(text);
   };
 
@@ -98,17 +100,17 @@ export default function Home({
                 onClick={() => changePage(currentPage - 1)}
                 disabled={currentPage === 1}
               >
-                Prev
+                {t('prev')}
               </button>
               <span>
-                Page {currentPage} of {totalPages}
+                {t('page')} {currentPage} {t('of')} {totalPages}
               </span>
               <button
                 className="control-btn"
                 onClick={() => changePage(currentPage + 1)}
                 disabled={currentPage === totalPages}
               >
-                Next
+                {t('next')}
               </button>
             </div>
           )}

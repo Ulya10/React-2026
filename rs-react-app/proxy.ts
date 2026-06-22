@@ -1,11 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './src/i18n/routing';
 
-const intlMiddleware = createMiddleware(routing);
-
-export default function middleware(request) {
-  return intlMiddleware(request);
-}
+export default createMiddleware(routing);
 
 export const config = {
   matcher: ['/', '/(ru|en)/:path*'],

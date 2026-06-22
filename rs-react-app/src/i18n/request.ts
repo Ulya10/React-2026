@@ -8,7 +8,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
   }
 
   const messages = (await import(`../../messages/${locale}.json`)).default;
-  console.log('Loaded locale:', locale, 'Messages:', messages);
 
   return {
     locale: locale as 'en' | 'ru',

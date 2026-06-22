@@ -1,16 +1,24 @@
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+'use client';
+
 import { getDetails } from '../api/api';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
-export default function DetailsSection() {
-  const params = useParams<{ id: string }>();
-  const id = Number(params.id);
-  const navigate = useNavigate();
-  const location = useLocation();
+export default function DetailsSection({
+  id,
+  page,
+}: {
+  id: string;
+  page: string;
+}) {
+  const locale = useLocale();
+  const t = useTranslations();
+  const router = useRouter();
+  const numId = Number(id);
 
-  const page = location.pathname.split('/')[1];
-
-  if (!id) {
+  if (!numId) {
     return <p>Invalid item ID</p>;
   }
 
@@ -20,14 +28,14 @@ export default function DetailsSection() {
     isError,
     error,
   } = useQuery({
-    queryKey: ['item', id],
+    queryKey: ['item', numId],
     queryFn: () => {
-      return getDetails(id);
+      return getDetails(numId);
     },
   });
 
   const oneClose = () => {
-    navigate(`/${page}`);
+    router.push(`/${locale}/${page}`);
   };
 
   if (isLoading) return <p>Loading details...</p>;
@@ -36,10 +44,12 @@ export default function DetailsSection() {
 
   return (
     <div>
-      <h2>Details</h2>
-      <p>Item #{id}</p>
-      <p>Type: {item.type}</p>
-      <button onClick={oneClose}>Close</button>
+      <h2>{t('details')}</h2>
+      <p>#{numId}</p>
+      <p>
+        {t('type')}: {item.type}
+      </p>
+      <button onClick={oneClose}>{t('close')}</button>
     </div>
   );
 }

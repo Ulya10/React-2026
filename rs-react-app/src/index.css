@@ -1,4 +1,4 @@
-:root {
+.app {
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
@@ -48,7 +48,7 @@
   --error-color: #ff6666;
 }
 
-#root {
+.app {
   width: 1126px;
   max-width: 100%;
   margin: 0 auto;

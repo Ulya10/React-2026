@@ -1,21 +1,40 @@
+'use client';
 import SearchSection from './SearchSection';
 import ResultsSection from './ResultsSection';
-import { useParams, useNavigate, useLocation, Outlet } from 'react-router-dom';
+import DetailsSection from './DetailsSection';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { getItems } from '../api/api';
+import { getItems } from '@/app/actions';
 import { useSelectedStore } from '../store/useSelectedStore';
 import './Home.css';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
+import { useEffect } from 'react';
+import type { ResultItem } from '@/types/types';
+import { useTranslations } from 'next-intl';
 
-export default function Home() {
-  const [lastSearch, setlastSearch] = useLocalStorage('search-text', '');
+export default function Home({
+  page,
+  detailsId,
+  initialData,
+  initialSearch,
+}: {
+  page: string;
+  detailsId?: string;
+  initialData?: ResultItem[];
+  initialSearch?: string;
+}) {
+  const locale = useLocale();
+  const t = useTranslations();
+  const [lastSearch, setlastSearch] = useLocalStorage(
+    'search-text',
+    initialSearch || ''
+  );
 
-  const location = useLocation();
-  const isDetailsOpen = location.pathname.includes('/details/');
-
-  const { page } = useParams<{ page: string }>();
-  const navigate = useNavigate();
   const currentPage = Number(page) || 1;
+  const isDetailsOpen = !!detailsId;
+  const router = useRouter();
+
   const itemsOnPage = 5;
 
   const {
@@ -27,28 +46,31 @@ export default function Home() {
     queryFn: () => {
       return getItems(lastSearch);
     },
+    initialData: initialData || undefined,
   });
 
   const totalPages = Math.ceil(results.length / itemsOnPage);
   const setStoreResults = useSelectedStore((state) => state.setResults);
-  if (results.length > 0) {
-    setStoreResults(results);
-  }
+  useEffect(() => {
+    if (results.length > 0) {
+      setStoreResults(results);
+    }
+  }, [results, setStoreResults]);
 
   const currentResults = results.slice(
     (currentPage - 1) * itemsOnPage,
     currentPage * itemsOnPage
   );
 
-  const changePage = (page: number) => {
-    navigate(`/${page}`);
+  const changePage = (newPage: number) => {
+    router.push(`/${locale}/${newPage}`);
   };
 
   const updateResults = (text: string): void => {
     if (text === lastSearch) {
       return;
     }
-    navigate('/1');
+    router.push(`/${locale}/1`);
     setlastSearch(text);
   };
 
@@ -61,7 +83,7 @@ export default function Home() {
           className="master-section"
           onClick={() => {
             if (isDetailsOpen) {
-              navigate(`/${currentPage}`);
+              router.push(`/${locale}/${currentPage}`);
             }
           }}
         >
@@ -78,25 +100,26 @@ export default function Home() {
                 onClick={() => changePage(currentPage - 1)}
                 disabled={currentPage === 1}
               >
-                Prev
+                {t('prev')}
               </button>
               <span>
-                Page {currentPage} of {totalPages}
+                {t('page')} {currentPage} {t('of')} {totalPages}
               </span>
               <button
                 className="control-btn"
                 onClick={() => changePage(currentPage + 1)}
                 disabled={currentPage === totalPages}
               >
-                Next
+                {t('next')}
               </button>
             </div>
           )}
         </div>
-
-        <div className="details-section">
-          <Outlet />
-        </div>
+        {isDetailsOpen && (
+          <div className="details-section">
+            <DetailsSection id={detailsId!} page={page} />
+          </div>
+        )}
       </div>
     </>
   );

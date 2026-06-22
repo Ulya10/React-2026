@@ -1,5 +1,8 @@
+'use client';
 import { useSelectedStore } from '../store/useSelectedStore';
+import { downloadCSV } from '@/app/actions';
 import './Flyout.css';
+import { useTranslations } from 'next-intl';
 
 export default function Flyout() {
   const numberOfItems = useSelectedStore(
@@ -8,36 +11,45 @@ export default function Flyout() {
   const unselectAll = useSelectedStore((state) => state.unselectAll);
   const selectedIndexes = useSelectedStore((state) => state.selectedIndexes);
   const results = useSelectedStore((state) => state.results);
+  const t = useTranslations();
 
   if (numberOfItems === 0) {
     return null;
   }
 
-  const downloadSelected = () => {
-    let csv = 'Name, Description\n';
+  const downloadSelected = async () => {
+    const ids: number[] = [];
+    const names: string[] = [];
+    const descriptions: string[] = [];
 
     for (const id of selectedIndexes) {
       const item = results.find((joke) => joke.id === id);
       if (item) {
-        csv += `"${item.name}","${item.description}"\n`;
+        ids.push(item.id);
+        names.push(item.name);
+        descriptions.push(item.description);
       }
     }
 
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const result = await downloadCSV(ids, names, descriptions);
+
+    const blob = new Blob([new Uint8Array(result.data)], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${numberOfItems}_items.csv`;
+    a.download = result.filename;
     a.click();
     URL.revokeObjectURL(url);
   };
 
   return (
     <div className="flyout">
-      <span>Items selected: {numberOfItems}</span>
+      <span>
+        {t('selected')}: {numberOfItems}
+      </span>
       <div className="flyout-buttons">
-        <button onClick={unselectAll}>Unselect all</button>
-        <button onClick={downloadSelected}>Download selected</button>
+        <button onClick={unselectAll}>{t('unselectAll')}</button>
+        <button onClick={downloadSelected}>{t('download')}</button>
       </div>
     </div>
   );

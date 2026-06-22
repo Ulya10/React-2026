@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
 
 export default function About() {
+  const locale = useLocale();
   return (
     <div>
       <h2>About page</h2>
@@ -17,7 +19,7 @@ export default function About() {
           RS School React course
         </a>
       </p>
-      <Link to="/">Back Home</Link>
+      <Link href={`/${locale}`}>Back Home</Link>
     </div>
   );
 }

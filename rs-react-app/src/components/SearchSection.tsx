@@ -1,6 +1,8 @@
+'use client';
 import useLocalStorage from '../hooks/useLocalStorage';
 import type { ChangeEvent, SyntheticEvent } from 'react';
 import './SearchSection.css';
+import { useTranslations } from 'next-intl';
 
 interface SearchSectionProps {
   onSubmitToSearch: (text: string) => void;
@@ -8,6 +10,8 @@ interface SearchSectionProps {
 
 export default function SearchSection(props: SearchSectionProps) {
   const [inputText, setinputText] = useLocalStorage('search-text', '');
+  const t = useTranslations();
+  console.log('Current locale:', t('search'));
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>): void => {
     setinputText(evt.target.value);
@@ -22,10 +26,15 @@ export default function SearchSection(props: SearchSectionProps) {
 
   return (
     <section className="search-section">
-      <h2>Search</h2>
+      <h2>{t('search')}</h2>
       <form onSubmit={submitSearch}>
-        <input type="text" value={inputText} onChange={handleInputChange} />
-        <button type="submit">Search!</button>
+        <input
+          type="text"
+          value={inputText}
+          onChange={handleInputChange}
+          placeholder={t('searchPlaceholder')}
+        />
+        <button type="submit">{t('search')}</button>
       </form>
     </section>
   );

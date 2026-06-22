@@ -8,14 +8,23 @@ import { useSelectedStore } from '../store/useSelectedStore';
 import './Home.css';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
+import { useEffect } from 'react';
 
-export default function Home({ page, detailsId }: { page: string; detailsId?: string }) {
+export default function Home({
+  page,
+  detailsId,
+}: {
+  page: string;
+  detailsId?: string;
+}) {
+  const locale = useLocale();
   const [lastSearch, setlastSearch] = useLocalStorage('search-text', '');
 
   const currentPage = Number(page) || 1;
   const isDetailsOpen = !!detailsId;
   const router = useRouter();
-  
+
   const itemsOnPage = 5;
 
   const {
@@ -31,9 +40,11 @@ export default function Home({ page, detailsId }: { page: string; detailsId?: st
 
   const totalPages = Math.ceil(results.length / itemsOnPage);
   const setStoreResults = useSelectedStore((state) => state.setResults);
-  if (results.length > 0) {
-    setStoreResults(results);
-  }
+  useEffect(() => {
+    if (results.length > 0) {
+      setStoreResults(results);
+    }
+  }, [results, setStoreResults]);
 
   const currentResults = results.slice(
     (currentPage - 1) * itemsOnPage,
@@ -41,14 +52,14 @@ export default function Home({ page, detailsId }: { page: string; detailsId?: st
   );
 
   const changePage = (newPage: number) => {
-    router.push(`/${newPage}`);
+    router.push(`/${locale}/${newPage}`);
   };
 
   const updateResults = (text: string): void => {
     if (text === lastSearch) {
       return;
     }
-    router.push('/1');
+    router.push('/${locale}/1');
     setlastSearch(text);
   };
 
@@ -61,7 +72,7 @@ export default function Home({ page, detailsId }: { page: string; detailsId?: st
           className="master-section"
           onClick={() => {
             if (isDetailsOpen) {
-              router.push(`/${currentPage}`);
+              router.push(`/${locale}/${currentPage}`);
             }
           }}
         >
@@ -93,11 +104,11 @@ export default function Home({ page, detailsId }: { page: string; detailsId?: st
             </div>
           )}
         </div>
-          (isDetailsOpen && 
+        {isDetailsOpen && (
           <div className="details-section">
-          <DetailsSection id={detailsId!} page={page} />
-        </div>)
-        
+            <DetailsSection id={detailsId!} page={page} />
+          </div>
+        )}
       </div>
     </>
   );

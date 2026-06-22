@@ -1,3 +1,4 @@
+'use client';
 import { useSelectedStore } from '../store/useSelectedStore';
 import './Flyout.css';
 

@@ -1,10 +1,18 @@
-'use client'
+'use client';
 
 import { getDetails } from '../api/api';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 
-export default function DetailsSection({ id, page }: { id: string; page: string }) {
+export default function DetailsSection({
+  id,
+  page,
+}: {
+  id: string;
+  page: string;
+}) {
+  const locale = useLocale();
 
   const router = useRouter();
   const numId = Number(id);
@@ -26,7 +34,7 @@ export default function DetailsSection({ id, page }: { id: string; page: string 
   });
 
   const oneClose = () => {
-    router.push(`/${page}`);
+    router.push(`/${locale}/${page}`);
   };
 
   if (isLoading) return <p>Loading details...</p>;

@@ -1,7 +1,9 @@
+'use client';
 import './ResultsSection.css';
 import type { ResultItem } from '../types/types';
-import  Link  from 'next/link';
+import Link from 'next/link';
 import { useSelectedStore } from '../store/useSelectedStore';
+import { useLocale } from 'next-intl';
 
 interface ResultsSectionProps {
   results: ResultItem[];
@@ -11,6 +13,7 @@ interface ResultsSectionProps {
 }
 
 export default function ResultsSection(props: ResultsSectionProps) {
+  const locale = useLocale();
   const selectedIndexes = useSelectedStore((state) => state.selectedIndexes);
   const toggleItem = useSelectedStore((state) => state.toggleItem);
   return (
@@ -40,7 +43,9 @@ export default function ResultsSection(props: ResultsSectionProps) {
                       toggleItem(item.id);
                     }}
                   />
-                  <Link href={`/${props.currentPage}/details/${item.id}`}>
+                  <Link
+                    href={`/${locale}/${props.currentPage}/details/${item.id}`}
+                  >
                     <h3 className="results-name">{item.name}</h3>
                     <p className="results-descr">{item.description}</p>
                   </Link>

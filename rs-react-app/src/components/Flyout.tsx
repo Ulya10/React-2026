@@ -1,5 +1,6 @@
 'use client';
 import { useSelectedStore } from '../store/useSelectedStore';
+import { downloadCSV } from '@/app/actions';
 import './Flyout.css';
 
 export default function Flyout() {
@@ -14,21 +15,27 @@ export default function Flyout() {
     return null;
   }
 
-  const downloadSelected = () => {
-    let csv = 'Name, Description\n';
+  const downloadSelected = async () => {
+    const ids: number[] = [];
+    const names: string[] = [];
+    const descriptions: string[] = [];
 
     for (const id of selectedIndexes) {
       const item = results.find((joke) => joke.id === id);
       if (item) {
-        csv += `"${item.name}","${item.description}"\n`;
+        ids.push(item.id);
+        names.push(item.name);
+        descriptions.push(item.description);
       }
     }
 
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const result = await downloadCSV(ids, names, descriptions);
+
+    const blob = new Blob([new Uint8Array(result.data)], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${numberOfItems}_items.csv`;
+    a.download = result.filename;
     a.click();
     URL.revokeObjectURL(url);
   };

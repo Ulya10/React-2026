@@ -1,8 +1,6 @@
 import Link from 'next/link';
-import { useLocale } from 'next-intl';
 
-export default function About() {
-  const locale = useLocale();
+export default function About({ locale }: { locale: string }) {
   return (
     <div>
       <h2>About page</h2>

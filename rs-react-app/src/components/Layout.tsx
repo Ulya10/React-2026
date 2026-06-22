@@ -12,13 +12,14 @@ export function LocaleSwitcher() {
   const router = useRouter();
 
   return (
-    <button onClick={() => router.push(locale === 'en' ? '/ru' : '/en')}>
+    <button onClick={() => router.push(locale === 'en' ? '/ru/1' : '/en/1')}>
       {locale === 'en' ? 'RU' : 'EN'}
     </button>
   );
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const locale = useLocale();
   const { theme, toggleTheme } = useTheme();
   const queryClient = useQueryClient();
   const unselectAll = useSelectedStore((state) => state.unselectAll);
@@ -31,7 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="app">
       <nav>
-        <Link href="/about">About</Link>
+        <Link href={`/${locale}/about`}>About</Link>
         <LocaleSwitcher />
         <button onClick={toggleTheme}>
           {theme === 'light' ? 'To Dark Humor' : 'To Light Humor'}

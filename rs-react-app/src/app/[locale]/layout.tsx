@@ -3,6 +3,8 @@ import Providers from './providers';
 import { getMessages } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
 import Layout from '@/components/Layout';
+import '@/App.css';
+import '@/index.css';
 
 export const metadata: Metadata = {
   title: 'Joke App',

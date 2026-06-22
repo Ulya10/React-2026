@@ -3,23 +3,31 @@ import SearchSection from './SearchSection';
 import ResultsSection from './ResultsSection';
 import DetailsSection from './DetailsSection';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { getItems } from '../api/api';
+import { getItems } from '@/app/actions';
 import { useSelectedStore } from '../store/useSelectedStore';
 import './Home.css';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { useEffect } from 'react';
+import type { ResultItem } from '@/types/types';
 
 export default function Home({
   page,
   detailsId,
+  initialData,
+  initialSearch,
 }: {
   page: string;
   detailsId?: string;
+  initialData?: ResultItem[];
+  initialSearch?: string;
 }) {
   const locale = useLocale();
-  const [lastSearch, setlastSearch] = useLocalStorage('search-text', '');
+  const [lastSearch, setlastSearch] = useLocalStorage(
+    'search-text',
+    initialSearch || ''
+  );
 
   const currentPage = Number(page) || 1;
   const isDetailsOpen = !!detailsId;
@@ -36,6 +44,7 @@ export default function Home({
     queryFn: () => {
       return getItems(lastSearch);
     },
+    initialData: initialData || undefined,
   });
 
   const totalPages = Math.ceil(results.length / itemsOnPage);
@@ -59,7 +68,7 @@ export default function Home({
     if (text === lastSearch) {
       return;
     }
-    router.push('/${locale}/1');
+    //  router.push(`/${locale}/1`);
     setlastSearch(text);
   };
 

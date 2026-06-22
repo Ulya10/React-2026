@@ -1,21 +1,21 @@
+'use client';
 import SearchSection from './SearchSection';
 import ResultsSection from './ResultsSection';
-import { useParams, useNavigate, useLocation, Outlet } from 'react-router-dom';
+import DetailsSection from './DetailsSection';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { getItems } from '../api/api';
 import { useSelectedStore } from '../store/useSelectedStore';
 import './Home.css';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default function Home({ page, detailsId }: { page: string; detailsId?: string }) {
   const [lastSearch, setlastSearch] = useLocalStorage('search-text', '');
 
-  const location = useLocation();
-  const isDetailsOpen = location.pathname.includes('/details/');
-
-  const { page } = useParams<{ page: string }>();
-  const navigate = useNavigate();
   const currentPage = Number(page) || 1;
+  const isDetailsOpen = !!detailsId;
+  const router = useRouter();
+  
   const itemsOnPage = 5;
 
   const {
@@ -40,15 +40,15 @@ export default function Home() {
     currentPage * itemsOnPage
   );
 
-  const changePage = (page: number) => {
-    navigate(`/${page}`);
+  const changePage = (newPage: number) => {
+    router.push(`/${newPage}`);
   };
 
   const updateResults = (text: string): void => {
     if (text === lastSearch) {
       return;
     }
-    navigate('/1');
+    router.push('/1');
     setlastSearch(text);
   };
 
@@ -61,7 +61,7 @@ export default function Home() {
           className="master-section"
           onClick={() => {
             if (isDetailsOpen) {
-              navigate(`/${currentPage}`);
+              router.push(`/${currentPage}`);
             }
           }}
         >
@@ -93,10 +93,11 @@ export default function Home() {
             </div>
           )}
         </div>
-
-        <div className="details-section">
-          <Outlet />
-        </div>
+          (isDetailsOpen && 
+          <div className="details-section">
+          <DetailsSection id={detailsId!} page={page} />
+        </div>)
+        
       </div>
     </>
   );

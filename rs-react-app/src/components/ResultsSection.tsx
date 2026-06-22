@@ -1,6 +1,6 @@
 import './ResultsSection.css';
 import type { ResultItem } from '../types/types';
-import { Link } from 'react-router-dom';
+import  Link  from 'next/link';
 import { useSelectedStore } from '../store/useSelectedStore';
 
 interface ResultsSectionProps {
@@ -40,7 +40,7 @@ export default function ResultsSection(props: ResultsSectionProps) {
                       toggleItem(item.id);
                     }}
                   />
-                  <Link to={`/${props.currentPage}/details/${item.id}`}>
+                  <Link href={`/${props.currentPage}/details/${item.id}`}>
                     <h3 className="results-name">{item.name}</h3>
                     <p className="results-descr">{item.description}</p>
                   </Link>

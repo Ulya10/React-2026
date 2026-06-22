@@ -5,7 +5,9 @@ export default function useLocalStorage(
   initialValue: string
 ): [string, (value: string) => void] {
   const [value, setValue] = useState<string>(
-    () => localStorage.getItem(key) ?? initialValue
+    
+    () => {if (typeof window === 'undefined') return initialValue;
+     return localStorage.getItem(key) ?? initialValue}
   );
 
   useEffect(() => {
